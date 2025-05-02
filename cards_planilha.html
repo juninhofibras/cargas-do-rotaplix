@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Cargas Disponíveis</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      padding: 20px;
+      margin: 0;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      padding: 15px;
+      width: 300px;
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: scale(1.02);
+    }
+
+    .card p {
+      margin: 5px 0;
+      color: #444;
+    }
+
+    .card p strong {
+      color: #222;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Cargas Disponíveis</h1>
+  <div class="container" id="cards-container"></div>
+
+  <script>
+    // URL convertida para CSV (Google Sheets formato simples)
+    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQRqIOROs3SOPKiIlEEVi53cuzFf6h7UQA-QxtDAj0cgUBDU2cpZJa-ul55wp-cs2xgZCSUWyOlHzxB/pub?gid=160529133&single=true&output=csv';
+
+    fetch(csvUrl)
+      .then(response => response.text())
+      .then(csv => {
+        const lines = csv.split('\n').map(line => line.split(','));
+        const headers = lines[0];
+        const container = document.getElementById('cards-container');
+
+        for (let i = 1; i < lines.length; i++) {
+          const row = lines[i];
+          if (row.length === 0 || row[0].trim() === '') continue;
+
+          const card = document.createElement('div');
+          card.className = 'card';
+
+          let html = '';
+          for (let j = 0; j < headers.length; j++) {
+            html += `<p><strong>${headers[j]}:</strong> ${row[j] || ''}</p>`;
+          }
+
+          card.innerHTML = html;
+          container.appendChild(card);
+        }
+      })
+      .catch(error => {
+        console.error('Erro ao buscar dados da planilha:', error);
+        document.getElementById('cards-container').innerHTML = '<p>Erro ao carregar os dados.</p>';
+      });
+  </script>
+
+</body>
+</html>
