@@ -46,6 +46,7 @@
     .card p {
       margin: 4px 0;
       color: #444;
+      line-height: 1.6;
     }
 
     .card p strong {
@@ -78,17 +79,14 @@
               card.className = 'card';
               let html = '';
 
-              // Corrigido: Cidade Origem + UF Origem
-              if (row['Cidade Origem'] || row['UF Origem']) {
-                html += `<p><strong>Origem:</strong> ${row['Cidade Origem'] || ''}${row['UF Origem'] ? ' - ' + row['UF Origem'] : ''}</p>`;
-              }
+              const cidadeOrigem = row['Cidade Origem'] || '';
+              const ufOrigem = row['UF Origem'] || '';
+              const cidadeDestino = row['Cidade Destino'] || '';
+              const ufDestino = row['UF Destino'] || '';
 
-              // Corrigido: Cidade Destino + UF Destino
-              if (row['Cidade Destino'] || row['UF Destino']) {
-                html += `<p><strong>Destino:</strong> ${row['Cidade Destino'] || ''}${row['UF Destino'] ? ' - ' + row['UF Destino'] : ''}</p>`;
-              }
+              html += `<p><strong>Origem:</strong> ${cidadeOrigem}${ufOrigem ? ' - ' + ufOrigem : ''}</p>`;
+              html += `<p><strong>Destino:</strong> ${cidadeDestino}${ufDestino ? ' - ' + ufDestino : ''}</p>`;
 
-              // Demais campos (removendo e-mail e campos já exibidos)
               for (const key in row) {
                 const keyLower = key.toLowerCase();
                 if (
