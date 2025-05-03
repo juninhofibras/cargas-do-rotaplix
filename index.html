@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Cargas Disponíveis</title>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -34,6 +35,8 @@
       max-width: 500px;
       transition: transform 0.2s;
       font-size: 13px;
+      word-wrap: break-word;
+      white-space: pre-wrap;
     }
 
     .card:hover {
@@ -56,7 +59,6 @@
   <div class="container" id="cards-container"></div>
 
   <script>
-    // Atualiza a página a cada 1 minuto (60.000 milissegundos)
     setInterval(() => {
       location.reload();
     }, 60000);
@@ -65,27 +67,29 @@
 
     fetch(csvUrl)
       .then(response => response.text())
-      .then(csv => {
-        const lines = csv.split('\n').map(line => line.split(','));
-        const headers = lines[0];
-        const container = document.getElementById('cards-container');
+      .then(csvText => {
+        Papa.parse(csvText, {
+          header: true,
+          skipEmptyLines: true,
+          complete: function(results) {
+            const data = results.data;
+            const container = document.getElementById('cards-container');
 
-        for (let i = 1; i < lines.length; i++) {
-          const row = lines[i];
-          if (row.length === 0 || row[0].trim() === '') continue;
+            data.forEach(row => {
+              const card = document.createElement('div');
+              card.className = 'card';
 
-          const card = document.createElement('div');
-          card.className = 'card';
+              let html = '';
+              for (const key in row) {
+                if (key.toLowerCase().includes('e-mail')) continue;
+                html += `<p><strong>${key}:</strong> ${row[key]}</p>`;
+              }
 
-          let html = '';
-          for (let j = 0; j < headers.length; j++) {
-            if (headers[j].toLowerCase().includes('e-mail')) continue; // ignora campos com "e-mail"
-            html += `<p><strong>${headers[j]}:</strong> ${row[j] || ''}</p>`;
+              card.innerHTML = html;
+              container.appendChild(card);
+            });
           }
-
-          card.innerHTML = html;
-          container.appendChild(card);
-        }
+        });
       })
       .catch(error => {
         console.error('Erro ao buscar dados da planilha:', error);
@@ -95,3 +99,4 @@
 
 </body>
 </html>
+
