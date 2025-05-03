@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Cargas Disponíveis</title>
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -35,8 +34,6 @@
       max-width: 500px;
       transition: transform 0.2s;
       font-size: 13px;
-      word-wrap: break-word;
-      white-space: pre-wrap;
     }
 
     .card:hover {
@@ -46,7 +43,7 @@
     .card p {
       margin: 4px 0;
       color: #444;
-      line-height: 1.6;
+      line-height: 1.6; /* Adicionado espaçamento entre as linhas */
     }
 
     .card p strong {
@@ -60,58 +57,41 @@
   <div class="container" id="cards-container"></div>
 
   <script>
-    setInterval(() => location.reload(), 60000);
+    setInterval(() => {
+      location.reload();
+    }, 60000);
 
     const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQRqIOROs3SOPKiIlEEVi53cuzFf6h7UQA-QxtDAj0cgUBDU2cpZJa-ul55wp-cs2xgZCSUWyOlHzxB/pub?gid=160529133&single=true&output=csv';
 
     fetch(csvUrl)
       .then(response => response.text())
-      .then(csvText => {
-        Papa.parse(csvText, {
-          header: true,
-          skipEmptyLines: true,
-          complete: function(results) {
-            const data = results.data;
-            const container = document.getElementById('cards-container');
+      .then(csv => {
+        const lines = csv.split('\n').map(line => line.split(','));
+        const headers = lines[0];
+        const container = document.getElementById('cards-container');
 
-            data.forEach(row => {
-              const card = document.createElement('div');
-              card.className = 'card';
-              let html = '';
+        for (let i = 1; i < lines.length; i++) {
+          const row = lines[i];
+          if (row.length === 0 || row[0].trim() === '') continue;
 
-              const cidadeOrigem = row['Cidade Origem'] || '';
-              const ufOrigem = row['UF Origem'] || '';
-              const cidadeDestino = row['Cidade Destino'] || '';
-              const ufDestino = row['UF Destino'] || '';
+          const card = document.createElement('div');
+          card.className = 'card';
 
-              // Origem e Destino na mesma linha com UF
-              html += `<p><strong>Origem:</strong> ${cidadeOrigem}${ufOrigem ? ' - ' + ufOrigem : ''}</p>`;
-              html += `<p><strong>Destino:</strong> ${cidadeDestino}${ufDestino ? ' - ' + ufDestino : ''}</p>`;
-
-              // Campos a ignorar
-              const ignorarCampos = ['Cidade Origem', 'UF Origem', 'Cidade Destino', 'UF Destino', 'E-mail'];
-
-              for (const key in row) {
-                if (ignorarCampos.includes(key)) continue;
-
-                const valor = row[key];
-                if (valor && valor.trim() !== '') {
-                  html += `<p><strong>${key}:</strong> ${valor}</p>`;
-                }
-              }
-
-              card.innerHTML = html;
-              container.appendChild(card);
-            });
+          let html = '';
+          for (let j = 0; j < headers.length; j++) {
+            if (headers[j].toLowerCase().includes('e-mail')) continue; // ignora campos com "e-mail"
+            html += `<p><strong>${headers[j]}:</strong> ${row[j] || ''}</p>`;
           }
-        });
+
+          card.innerHTML = html;
+          container.appendChild(card);
+        }
       })
       .catch(error => {
-        console.error('Erro ao buscar dados:', error);
+        console.error('Erro ao buscar dados da planilha:', error);
         document.getElementById('cards-container').innerHTML = '<p>Erro ao carregar os dados.</p>';
       });
   </script>
 
 </body>
 </html>
-
