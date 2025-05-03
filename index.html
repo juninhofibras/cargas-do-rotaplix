@@ -84,17 +84,20 @@
               const cidadeDestino = row['Cidade Destino'] || '';
               const ufDestino = row['UF Destino'] || '';
 
+              // Origem e Destino na mesma linha com UF
               html += `<p><strong>Origem:</strong> ${cidadeOrigem}${ufOrigem ? ' - ' + ufOrigem : ''}</p>`;
               html += `<p><strong>Destino:</strong> ${cidadeDestino}${ufDestino ? ' - ' + ufDestino : ''}</p>`;
 
-              for (const key in row) {
-                const keyLower = key.toLowerCase();
-                if (
-                  ['cidade origem', 'uf origem', 'cidade destino', 'uf destino'].includes(keyLower) ||
-                  keyLower.includes('e-mail')
-                ) continue;
+              // Campos a ignorar
+              const ignorarCampos = ['Cidade Origem', 'UF Origem', 'Cidade Destino', 'UF Destino', 'E-mail'];
 
-                html += `<p><strong>${key}:</strong> ${row[key]}</p>`;
+              for (const key in row) {
+                if (ignorarCampos.includes(key)) continue;
+
+                const valor = row[key];
+                if (valor && valor.trim() !== '') {
+                  html += `<p><strong>${key}:</strong> ${valor}</p>`;
+                }
               }
 
               card.innerHTML = html;
