@@ -80,8 +80,29 @@
               card.className = 'card';
 
               let html = '';
+
+              // Mescla ORIGEM e UF
+              if (row['Origem'] || row['UF Origem']) {
+                html += `<p><strong>Origem:</strong> ${row['Origem'] || ''} - ${row['UF Origem'] || ''}</p>`;
+              }
+
+              // Mescla DESTINO e UF
+              if (row['Destino'] || row['UF Destino']) {
+                html += `<p><strong>Destino:</strong> ${row['Destino'] || ''} - ${row['UF Destino'] || ''}</p>`;
+              }
+
               for (const key in row) {
-                if (key.toLowerCase().includes('e-mail')) continue;
+                const keyLower = key.toLowerCase();
+                if (
+                  keyLower.includes('e-mail') ||
+                  keyLower.includes('uf origem') ||
+                  keyLower.includes('uf destino') ||
+                  keyLower.includes('origem') ||
+                  keyLower.includes('destino')
+                ) {
+                  continue; // já tratamos esses campos acima
+                }
+
                 html += `<p><strong>${key}:</strong> ${row[key]}</p>`;
               }
 
@@ -99,4 +120,5 @@
 
 </body>
 </html>
+
 
