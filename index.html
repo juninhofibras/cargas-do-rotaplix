@@ -44,9 +44,9 @@
     }
 
     .card p {
-      margin: 4px 0;
+      margin: 6px 0;
       color: #444;
-      line-heigth: 1,6;
+      line-height: 1.6;
     }
 
     .card p strong {
@@ -81,8 +81,31 @@
               card.className = 'card';
 
               let html = '';
+
+              // Linha mesclada: ORIGEM + UF ORIGEM
+              const origem = row['ORIGEM'] || '';
+              const ufOrigem = row['UF ORIGEM'] || '';
+              if (origem || ufOrigem) {
+                html += `<p><strong>Origem:</strong> ${origem}${ufOrigem ? ' - ' + ufOrigem : ''}</p>`;
+              }
+
+              // Linha mesclada: DESTINO + UF DESTINO
+              const destino = row['DESTINO'] || '';
+              const ufDestino = row['UF DESTINO'] || '';
+              if (destino || ufDestino) {
+                html += `<p><strong>Destino:</strong> ${destino}${ufDestino ? ' - ' + ufDestino : ''}</p>`;
+              }
+
               for (const key in row) {
-                if (key.toLowerCase().includes('e-mail')) continue;
+                const keyLower = key.toLowerCase();
+                if (
+                  keyLower.includes('e-mail') ||
+                  keyLower === 'uf origem' ||
+                  keyLower === 'uf destino' ||
+                  keyLower === 'origem' ||
+                  keyLower === 'destino'
+                ) continue;
+
                 html += `<p><strong>${key}:</strong> ${row[key]}</p>`;
               }
 
@@ -97,6 +120,7 @@
         document.getElementById('cards-container').innerHTML = '<p>Erro ao carregar os dados.</p>';
       });
   </script>
-<p>Volte até a aba Transportadoras e encontre os contatos da sua carga!</p>
+
+  <p>Volte até a aba Transportadoras e encontre os contatos da sua carga!</p>
 </body>
 </html>
