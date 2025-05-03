@@ -1,196 +1,97 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="60"> <!-- Atualiza a cada 1 min -->
-  <title>Formulário de Carga</title>
+  <title>Cargas Disponíveis</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
+      background-color: #f0f2f5;
       padding: 20px;
+      margin: 0;
       font-size: 14px;
     }
 
-    form {
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .card {
       background-color: #fff;
-      padding: 25px;
-      border-radius: 8px;
-      max-width: 700px;
-      margin: auto;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-
-    input, select, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      padding: 15px;
+      width: 90%;
+      max-width: 500px;
+      transition: transform 0.2s;
       font-size: 13px;
     }
 
-    textarea {
-      resize: vertical;
-      height: 100px;
+    .card:hover {
+      transform: scale(1.02);
     }
 
-    button {
-      margin-top: 20px;
-      padding: 12px;
-      background-color: #28a745;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 15px;
-      cursor: pointer;
-      width: 100%;
+    .card p {
+      margin: 4px 0;
+      color: #444;
     }
 
-    button:hover {
-      background-color: #218838;
+    .card p strong {
+      color: #222;
     }
   </style>
 </head>
 <body>
-  <form>
-    <label>Transportadora</label>
-    <input type="text" placeholder="Nome da transportadora">
 
-    <label>Cidade de origem</label>
-    <input type="text" placeholder="Digite o nome da cidade de origem">
-    <select>
-      <option value="">Selecione o estado</option>
-      <option>AC</option><option>AL</option><option>AP</option><option>AM</option><option>BA</option>
-      <option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option>
-      <option>MT</option><option>MS</option><option>MG</option><option>PA</option><option>PB</option>
-      <option>PR</option><option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
-      <option>RS</option><option>RO</option><option>RR</option><option>SC</option><option>SP</option>
-      <option>SE</option><option>TO</option>
-    </select>
+  <h1>Cargas Disponíveis</h1>
+  <div class="container" id="cards-container"></div>
 
-    <label>Cidade destino</label>
-    <input type="text" placeholder="Digite o nome da cidade de destino">
-    <select>
-      <option value="">Selecione o estado</option>
-      <option>AC</option><option>AL</option><option>AP</option><option>AM</option><option>BA</option>
-      <option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option>
-      <option>MT</option><option>MS</option><option>MG</option><option>PA</option><option>PB</option>
-      <option>PR</option><option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
-      <option>RS</option><option>RO</option><option>RR</option><option>SC</option><option>SP</option>
-      <option>SE</option><option>TO</option>
-    </select>
+  <script>
+    // Atualiza a página a cada 1 minuto (60.000 milissegundos)
+    setInterval(() => {
+      location.reload();
+    }, 60000);
 
-    <label>Produto</label>
-    <input type="text" placeholder="Nome do produto transportado">
+    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQRqIOROs3SOPKiIlEEVi53cuzFf6h7UQA-QxtDAj0cgUBDU2cpZJa-ul55wp-cs2xgZCSUWyOlHzxB/pub?gid=160529133&single=true&output=csv';
 
-    <label>Espécie</label>
-    <select>
-      <option>Animais</option>
-      <option>Big bag</option>
-      <option>Bobina</option>
-      <option>Caixas</option>
-      <option>Contêiner</option>
-      <option>Diversos</option>
-      <option>Fardos</option>
-      <option>Fracionado</option>
-      <option>Granel</option>
-      <option>Metro cúbico</option>
-      <option>Milheiro</option>
-      <option>Mudanças</option>
-      <option>Paletes</option>
-      <option>Ensacado</option>
-      <option>Tambor</option>
-      <option>Utilidades</option>
-    </select>
+    fetch(csvUrl)
+      .then(response => response.text())
+      .then(csv => {
+        const lines = csv.split('\n').map(line => line.split(','));
+        const headers = lines[0];
+        const container = document.getElementById('cards-container');
 
-    <label>Tipo de carga</label>
-    <select>
-      <option>Carga completa</option>
-      <option>Complemento</option>
-    </select>
+        for (let i = 1; i < lines.length; i++) {
+          const row = lines[i];
+          if (row.length === 0 || row[0].trim() === '') continue;
 
-    <label>Valor do frete</label>
-    <input type="text" placeholder="Digite o valor ou 'A combinar'">
+          const card = document.createElement('div');
+          card.className = 'card';
 
-    <label>Pedágio</label>
-    <select>
-      <option>Sim</option>
-      <option>Não</option>
-    </select>
+          let html = '';
+          for (let j = 0; j < headers.length; j++) {
+            if (headers[j].toLowerCase().includes('e-mail')) continue; // ignora campos com "e-mail"
+            html += `<p><strong>${headers[j]}:</strong> ${row[j] || ''}</p>`;
+          }
 
-    <label>Forma de pagamento</label>
-    <select>
-      <option>Crédito em cartão</option>
-      <option>Dinheiro</option>
-      <option>Carta frete</option>
-      <option>Depósito em conta</option>
-      <option>Pix</option>
-      <option>Outros</option>
-    </select>
+          card.innerHTML = html;
+          container.appendChild(card);
+        }
+      })
+      .catch(error => {
+        console.error('Erro ao buscar dados da planilha:', error);
+        document.getElementById('cards-container').innerHTML = '<p>Erro ao carregar os dados.</p>';
+      });
+  </script>
 
-    <label>Veículo</label>
-    <select>
-      <option>3/4</option>
-      <option>Toco</option>
-      <option>Truck</option>
-      <option>Bi-truck</option>
-      <option>Carreta</option>
-      <option>Carreta LS</option>
-      <option>Vanderléia</option>
-      <option>Bitem</option>
-      <option>Rodotrem</option>
-      <option>Asilo</option>
-      <option>Apenas cavalo</option>
-    </select>
-
-    <label>Qual carroceria</label>
-    <select>
-      <option>Baú</option>
-      <option>Baú refrigerado</option>
-      <option>Baú frigorífico</option>
-      <option>Bug porta contêiner</option>
-      <option>Caçamba</option>
-      <option>Cavaqueira</option>
-      <option>Cegonheiro</option>
-      <option>Graneleiro</option>
-      <option>Grade Baixa</option>
-      <option>Gaiola</option>
-      <option>Hopper</option>
-      <option>Sider</option>
-      <option>Plataforma</option>
-      <option>Prancha</option>
-    </select>
-
-    <label>Lona</label>
-    <select>
-      <option>Sim</option>
-      <option>Não</option>
-    </select>
-
-    <label>Rastreador</label>
-    <select>
-      <option>Sim</option>
-      <option>Não</option>
-    </select>
-
-    <label>Seguro contra roubo</label>
-    <select>
-      <option>Sim</option>
-      <option>Não</option>
-    </select>
-
-    <label>Outras observações</label>
-    <textarea placeholder="Digite informações adicionais aqui..."></textarea>
-
-    <button type="submit">Postar Carga</button>
-  </form>
 </body>
 </html>
