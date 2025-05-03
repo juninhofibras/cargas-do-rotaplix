@@ -83,16 +83,16 @@
 
               // ORIGEM + UF ORIGEM
               const origem = row['Origem'] || '';
-              const ufOrigem = row['UF Origem'] || '';
+              const uf = row['UF'] || '';
               if (origem) {
                 html += `<p><strong>Origem:</strong> ${origem}${ufOrigem ? ' - ' + ufOrigem : ''}</p>`;
               }
 
               // DESTINO + UF DESTINO
               const destino = row['Destino'] || '';
-              const ufDestino = row['UF Destino'] || '';
+              const uf = row['UF'] || '';
               if (destino) {
-                html += `<p><strong>Destino:</strong> ${destino}${ufDestino ? ' - ' + ufDestino : ''}</p>`;
+                html += `<p><strong>Destino:</strong> ${destino}${uf ? ' - ' + uf: ''}</p>`;
               }
 
               for (const key in row) {
