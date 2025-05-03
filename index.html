@@ -59,7 +59,6 @@
   <div class="container" id="cards-container"></div>
 
   <script>
-    // Recarrega a página a cada 1 minuto
     setInterval(() => location.reload(), 60000);
 
     const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQRqIOROs3SOPKiIlEEVi53cuzFf6h7UQA-QxtDAj0cgUBDU2cpZJa-ul55wp-cs2xgZCSUWyOlHzxB/pub?gid=160529133&single=true&output=csv';
@@ -79,21 +78,21 @@
               card.className = 'card';
               let html = '';
 
-              // Exibe Origem + UF Origem
-              if (row['Origem'] || row['UF Origem']) {
-                html += `<p><strong>Origem:</strong> ${row['Origem'] || ''}${row['UF Origem'] ? ' - ' + row['UF Origem'] : ''}</p>`;
+              // Corrigido: Cidade Origem + UF Origem
+              if (row['Cidade Origem'] || row['UF Origem']) {
+                html += `<p><strong>Origem:</strong> ${row['Cidade Origem'] || ''}${row['UF Origem'] ? ' - ' + row['UF Origem'] : ''}</p>`;
               }
 
-              // Exibe Destino + UF Destino
-              if (row['Destino'] || row['UF Destino']) {
-                html += `<p><strong>Destino:</strong> ${row['Destino'] || ''}${row['UF Destino'] ? ' - ' + row['UF Destino'] : ''}</p>`;
+              // Corrigido: Cidade Destino + UF Destino
+              if (row['Cidade Destino'] || row['UF Destino']) {
+                html += `<p><strong>Destino:</strong> ${row['Cidade Destino'] || ''}${row['UF Destino'] ? ' - ' + row['UF Destino'] : ''}</p>`;
               }
 
-              // Exibe os demais campos, exceto os já tratados
+              // Demais campos (removendo e-mail e campos já exibidos)
               for (const key in row) {
                 const keyLower = key.toLowerCase();
                 if (
-                  ['origem', 'uf origem', 'destino', 'uf destino'].includes(keyLower) ||
+                  ['cidade origem', 'uf origem', 'cidade destino', 'uf destino'].includes(keyLower) ||
                   keyLower.includes('e-mail')
                 ) continue;
 
