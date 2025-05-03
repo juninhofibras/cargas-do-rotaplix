@@ -77,36 +77,41 @@
             const container = document.getElementById('cards-container');
 
             data.forEach(row => {
+              const normalizedRow = {};
+              for (const key in row) {
+                const normalizedKey = key.trim().toLowerCase();
+                normalizedRow[normalizedKey] = row[key];
+              }
+
               const card = document.createElement('div');
               card.className = 'card';
 
               let html = '';
 
               // Linha mesclada: ORIGEM + UF ORIGEM
-              const origem = row['ORIGEM'] || '';
-              const ufOrigem = row['UF ORIGEM'] || '';
+              const origem = normalizedRow['origem'] || '';
+              const ufOrigem = normalizedRow['uf origem'] || '';
               if (origem || ufOrigem) {
                 html += `<p><strong>Origem:</strong> ${origem}${ufOrigem ? ' - ' + ufOrigem : ''}</p>`;
               }
 
               // Linha mesclada: DESTINO + UF DESTINO
-              const destino = row['DESTINO'] || '';
-              const ufDestino = row['UF DESTINO'] || '';
+              const destino = normalizedRow['destino'] || '';
+              const ufDestino = normalizedRow['uf destino'] || '';
               if (destino || ufDestino) {
                 html += `<p><strong>Destino:</strong> ${destino}${ufDestino ? ' - ' + ufDestino : ''}</p>`;
               }
 
-              for (const key in row) {
-                const keyLower = key.toLowerCase();
+              for (const key in normalizedRow) {
                 if (
-                  keyLower.includes('e-mail') ||
-                  keyLower === 'uf origem' ||
-                  keyLower === 'uf destino' ||
-                  keyLower === 'origem' ||
-                  keyLower === 'destino'
+                  key.includes('e-mail') ||
+                  key === 'uf origem' ||
+                  key === 'uf destino' ||
+                  key === 'origem' ||
+                  key === 'destino'
                 ) continue;
 
-                html += `<p><strong>${key}:</strong> ${row[key]}</p>`;
+                html += `<p><strong>${key}:</strong> ${normalizedRow[key]}</p>`;
               }
 
               card.innerHTML = html;
