@@ -3,71 +3,194 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="refresh" content="60"> <!-- Atualiza a cada 1 min -->
-  <title>Cards de Cargas</title>
+  <title>Formulário de Carga</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f2f2f2;
+      background-color: #f4f4f4;
       padding: 20px;
-    }
-
-    .container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-    }
-
-    .card {
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      padding: 20px;
-      width: 340px; /* Aumentado */
-      box-sizing: border-box;
-      font-size: 13px; /* Fonte menor */
-    }
-
-    .card h3 {
-      margin-top: 0;
-      color: #333;
       font-size: 14px;
     }
 
-    .card p {
-      margin: 4px 0;
-      color: #555;
+    form {
+      background-color: #fff;
+      padding: 25px;
+      border-radius: 8px;
+      max-width: 700px;
+      margin: auto;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
 
-    .field-label {
+    label {
+      display: block;
+      margin-top: 15px;
       font-weight: bold;
-      color: #000;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      font-size: 13px;
+    }
+
+    textarea {
+      resize: vertical;
+      height: 100px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 15px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #218838;
     }
   </style>
 </head>
 <body>
-  <h1 style="text-align:center;">Dados de Cargas</h1>
-  <div class="container">
-    <!-- Exemplo de Card -->
-    <div class="card">
-      <h3>Transportadora: <span class="field-label">Transportadora Exemplo</span></h3>
-      <p><span class="field-label">Cidade de origem:</span> Belo Horizonte</p>
-      <p><span class="field-label">Estado de origem:</span> MG</p>
-      <p><span class="field-label">Cidade destino:</span> São Paulo</p>
-      <p><span class="field-label">Estado destino:</span> SP</p>
-      <p><span class="field-label">Produto:</span> </p>
-      <p><span class="field-label">Espécie:</span> Caixas</p>
-      <p><span class="field-label">Tipo de carga:</span> Carga completa</p>
-      <p><span class="field-label">Valor do frete:</span> R$ 1.500,00</p>
-      <p><span class="field-label">Pedágio:</span> Sim</p>
-      <p><span class="field-label">Forma de pagamento:</span> Pix</p>
-      <p><span class="field-label">Veículo:</span> Carreta</p>
-      <p><span class="field-label">Carroceria:</span> Baú</p>
-      <p><span class="field-label">Lona:</span> Não</p>
-      <p><span class="field-label">Rastreador:</span> Sim</p>
-      <p><span class="field-label">Seguro contra roubo:</span> Sim</p>
-      <p><span class="field-label">Outras observações:</span> Entrega urgente</p>
-    </div>
-  </div>
+  <form>
+    <label>Transportadora</label>
+    <input type="text" placeholder="Nome da transportadora">
+
+    <label>Cidade de origem</label>
+    <input type="text" placeholder="Digite o nome da cidade de origem">
+    <select>
+      <option value="">Selecione o estado</option>
+      <option>AC</option><option>AL</option><option>AP</option><option>AM</option><option>BA</option>
+      <option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option>
+      <option>MT</option><option>MS</option><option>MG</option><option>PA</option><option>PB</option>
+      <option>PR</option><option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+      <option>RS</option><option>RO</option><option>RR</option><option>SC</option><option>SP</option>
+      <option>SE</option><option>TO</option>
+    </select>
+
+    <label>Cidade destino</label>
+    <input type="text" placeholder="Digite o nome da cidade de destino">
+    <select>
+      <option value="">Selecione o estado</option>
+      <option>AC</option><option>AL</option><option>AP</option><option>AM</option><option>BA</option>
+      <option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option>
+      <option>MT</option><option>MS</option><option>MG</option><option>PA</option><option>PB</option>
+      <option>PR</option><option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+      <option>RS</option><option>RO</option><option>RR</option><option>SC</option><option>SP</option>
+      <option>SE</option><option>TO</option>
+    </select>
+
+    <label>Produto</label>
+    <input type="text" placeholder="Nome do produto transportado">
+
+    <label>Espécie</label>
+    <select>
+      <option>Animais</option>
+      <option>Big bag</option>
+      <option>Bobina</option>
+      <option>Caixas</option>
+      <option>Contêiner</option>
+      <option>Diversos</option>
+      <option>Fardos</option>
+      <option>Fracionado</option>
+      <option>Granel</option>
+      <option>Metro cúbico</option>
+      <option>Milheiro</option>
+      <option>Mudanças</option>
+      <option>Paletes</option>
+      <option>Ensacado</option>
+      <option>Tambor</option>
+      <option>Utilidades</option>
+    </select>
+
+    <label>Tipo de carga</label>
+    <select>
+      <option>Carga completa</option>
+      <option>Complemento</option>
+    </select>
+
+    <label>Valor do frete</label>
+    <input type="text" placeholder="Digite o valor ou 'A combinar'">
+
+    <label>Pedágio</label>
+    <select>
+      <option>Sim</option>
+      <option>Não</option>
+    </select>
+
+    <label>Forma de pagamento</label>
+    <select>
+      <option>Crédito em cartão</option>
+      <option>Dinheiro</option>
+      <option>Carta frete</option>
+      <option>Depósito em conta</option>
+      <option>Pix</option>
+      <option>Outros</option>
+    </select>
+
+    <label>Veículo</label>
+    <select>
+      <option>3/4</option>
+      <option>Toco</option>
+      <option>Truck</option>
+      <option>Bi-truck</option>
+      <option>Carreta</option>
+      <option>Carreta LS</option>
+      <option>Vanderléia</option>
+      <option>Bitem</option>
+      <option>Rodotrem</option>
+      <option>Asilo</option>
+      <option>Apenas cavalo</option>
+    </select>
+
+    <label>Qual carroceria</label>
+    <select>
+      <option>Baú</option>
+      <option>Baú refrigerado</option>
+      <option>Baú frigorífico</option>
+      <option>Bug porta contêiner</option>
+      <option>Caçamba</option>
+      <option>Cavaqueira</option>
+      <option>Cegonheiro</option>
+      <option>Graneleiro</option>
+      <option>Grade Baixa</option>
+      <option>Gaiola</option>
+      <option>Hopper</option>
+      <option>Sider</option>
+      <option>Plataforma</option>
+      <option>Prancha</option>
+    </select>
+
+    <label>Lona</label>
+    <select>
+      <option>Sim</option>
+      <option>Não</option>
+    </select>
+
+    <label>Rastreador</label>
+    <select>
+      <option>Sim</option>
+      <option>Não</option>
+    </select>
+
+    <label>Seguro contra roubo</label>
+    <select>
+      <option>Sim</option>
+      <option>Não</option>
+    </select>
+
+    <label>Outras observações</label>
+    <textarea placeholder="Digite informações adicionais aqui..."></textarea>
+
+    <button type="submit">Postar Carga</button>
+  </form>
 </body>
 </html>
